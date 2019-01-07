@@ -29,4 +29,8 @@ public class CategoryService {
         Page pageFromJPA = categoryDAO.findAll(pageable);
         return  new Page4Navigator<>(pageFromJPA,navigatePages);
     }
+
+    public void add(Category category){
+        this.categoryDAO.save(category);
+    }
 }
