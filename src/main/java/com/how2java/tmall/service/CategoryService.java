@@ -41,4 +41,8 @@ public class CategoryService {
     public Category get(int id){
         return  this.categoryDAO.findOne(id);
     }
+
+    public void update(Category category){
+        this.categoryDAO.save(category);
+    }
 }
