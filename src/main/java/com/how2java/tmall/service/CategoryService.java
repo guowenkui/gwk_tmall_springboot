@@ -37,4 +37,8 @@ public class CategoryService {
     public void delete(int id){
         this.categoryDAO.delete(id);
     }
+
+    public Category get(int id){
+        return  this.categoryDAO.findOne(id);
+    }
 }

@@ -55,4 +55,15 @@ public class CategoryController {
         return null;
     }
 
+    /**
+     *编辑界面展示的数据
+     */
+    @GetMapping("/categories/{id}")
+    public Category get(@PathVariable("id") int id) throws  Exception{
+        Category category = this.categoryService.get(id);
+        return  category;
+    }
+
+
+
 }

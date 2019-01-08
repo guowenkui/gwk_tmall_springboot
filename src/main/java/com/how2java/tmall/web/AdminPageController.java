@@ -14,4 +14,13 @@ public class AdminPageController {
     public String listCategory(){
         return "admin/listCategory";
     }
+
+
+    /**
+     * 导向到编辑界面
+     */
+    @GetMapping(value = "/admin_category_edit")
+    public String edit(){
+        return "admin/editCategory";
+    }
 }
