@@ -10,6 +10,9 @@ public class AdminPageController {
         return "redirect:admin_category_list";
     }
 
+    /**
+     *导向到分类管理界面
+     */
     @GetMapping(value = "/admin_category_list")
     public String listCategory(){
         return "admin/listCategory";
@@ -17,10 +20,27 @@ public class AdminPageController {
 
 
     /**
-     * 导向到编辑界面
+     * 导向到分类的编辑界面
      */
     @GetMapping(value = "/admin_category_edit")
     public String edit(){
         return "admin/editCategory";
+    }
+
+
+    /**
+     * 导向到属性管理界面
+     */
+    @GetMapping(value = "/admin_property_list")
+    public String propertyList(){
+        return "admin/listProperty";
+    }
+
+    /**
+     * 导向到属性管理编辑界面
+     */
+    @GetMapping(value = "/admin_property_edit")
+    public String propertyEdit(){
+        return "admin/editProperty";
     }
 }
