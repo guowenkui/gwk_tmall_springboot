@@ -43,4 +43,22 @@ public class AdminPageController {
     public String propertyEdit(){
         return "admin/editProperty";
     }
+
+    /**
+     * 导向到产品管理界面
+     */
+
+    @GetMapping("/admin_product_list")
+    public String productList(){
+        return "admin/listProduct";
+    }
+
+    /**
+     * 导向到产品编辑界面
+     */
+    @GetMapping("/admin_product_edit")
+    public String productEdit(){
+        return "admin/editProduct";
+    }
+
 }
