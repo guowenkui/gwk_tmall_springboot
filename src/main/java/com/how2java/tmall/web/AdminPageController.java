@@ -61,4 +61,13 @@ public class AdminPageController {
         return "admin/editProduct";
     }
 
+
+    /**
+     * 导向到产品的图片管理界面
+     */
+    @GetMapping("admin_productImage_list")
+    public String productImageList(){
+        return "admin/listProductImage";
+    }
+
 }

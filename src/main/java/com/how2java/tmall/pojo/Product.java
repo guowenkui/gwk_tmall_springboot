@@ -30,6 +30,8 @@ public class Product {
 
     Date createDate;
 
+    @Transient
+    private ProductImage firstProductImage;
 
 
 
@@ -97,5 +99,13 @@ public class Product {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public ProductImage getFirstProductImage() {
+        return firstProductImage;
+    }
+
+    public void setFirstProductImage(ProductImage firstProductImage) {
+        this.firstProductImage = firstProductImage;
     }
 }
