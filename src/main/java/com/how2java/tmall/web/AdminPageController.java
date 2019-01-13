@@ -70,4 +70,12 @@ public class AdminPageController {
         return "admin/listProductImage";
     }
 
+    /**
+     * 导向到产品的"设置属性"界面
+     */
+    @GetMapping("admin_propertyValue_edit")
+    public String propertyValueEdit(){
+        return "admin/editPropertyValue";
+    }
+
 }
