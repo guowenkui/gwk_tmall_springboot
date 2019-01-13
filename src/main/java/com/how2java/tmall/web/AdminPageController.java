@@ -78,4 +78,13 @@ public class AdminPageController {
         return "admin/editPropertyValue";
     }
 
+
+    /**
+     * 导向到"用户管理"界面
+     */
+    @GetMapping("admin_user_list")
+    public String userList(){
+        return "admin/listUser";
+    }
+
 }
