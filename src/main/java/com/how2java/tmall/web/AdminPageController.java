@@ -87,4 +87,13 @@ public class AdminPageController {
         return "admin/listUser";
     }
 
+
+    /**
+     * 导向到"订单管理"界面
+     */
+    @GetMapping("admin_order_list")
+    public String orderList(){
+        return "admin/listOrder";
+    }
+
 }
