@@ -32,4 +32,13 @@ public class ForePageController {
     public String registerSuccess(){
         return "fore/registerSuccess";
     }
+
+
+    /**
+     * 导向到登录界面
+     */
+    @GetMapping(value = "/login")
+    public String login(){
+        return "fore/login";
+    }
 }
