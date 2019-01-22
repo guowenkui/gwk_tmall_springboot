@@ -12,6 +12,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ProductService {
 
@@ -20,6 +23,11 @@ public class ProductService {
 
     @Autowired
     private ProductDAO productDAO;
+
+    @Autowired
+    private ProductImageSercice productImageSercice;
+
+
 
 
 
@@ -50,4 +58,42 @@ public class ProductService {
     public void update(Product bean) {
         this.productDAO.save(bean);
     }
+
+
+    public void fill(List<Category> cs) {
+        for (Category category:cs){
+            fill(category);
+        }
+    }
+
+    public void  fill(Category category){
+        List<Product> products = listByCategory(category);
+        this.productImageSercice.setFirstProductImage(products);
+        category.setProducts(products);
+    }
+
+
+
+    public void fillByRow(List<Category> cs) {
+
+        int productNumberEachRow = 8;
+        for (Category category:cs){
+            List<Product> products = category.getProducts();
+            List<List<Product>> productsByRow = new ArrayList<>();
+
+            for (int i = 0; i <products.size() ; i+=productNumberEachRow) {
+                int toIndex = i+productNumberEachRow;
+                toIndex = toIndex>products.size()?products.size():toIndex;
+                List<Product> subList = products.subList(i,toIndex);
+                productsByRow.add(subList);
+            }
+            category.setProductsByRow(productsByRow);
+        }
+    }
+
+    private List<Product> listByCategory(Category category) {
+        return this.productDAO.findByCategoryOrderById(category);
+    }
+
+
 }
