@@ -15,4 +15,21 @@ public class ForePageController {
     public String home(){
         return "fore/home";
     }
+
+    /**
+     * 导向到注册界面
+     */
+    @GetMapping(value = "/register")
+    public String register(){
+        return "fore/register";
+    }
+
+
+    /**
+     *导向到注册成功界面
+     */
+    @GetMapping(value = "/registerSuccess")
+    public String registerSuccess(){
+        return "fore/registerSuccess";
+    }
 }
