@@ -52,4 +52,12 @@ public class ForePageController {
         session.removeAttribute("user");
         return "redirect:home";
     }
+
+    /**
+     * 导向到产品页
+     */
+    @GetMapping("/product")
+    public String product(){
+        return "fore/product";
+    }
 }

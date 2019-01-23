@@ -4,6 +4,7 @@ package com.how2java.tmall.service;
 import com.how2java.tmall.dao.ProductDAO;
 import com.how2java.tmall.pojo.Category;
 import com.how2java.tmall.pojo.Product;
+import com.how2java.tmall.pojo.Review;
 import com.how2java.tmall.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,12 @@ public class ProductService {
 
     @Autowired
     private ProductImageSercice productImageSercice;
+
+    @Autowired
+    private OrderItemService orderItemService;
+
+    @Autowired
+    private ReviewService reviewService;
 
 
 
@@ -96,4 +103,17 @@ public class ProductService {
     }
 
 
+    public void setSaleAndReviewNumber(Product product) {
+        int saleCount = this.orderItemService.getSaleCount(product);
+        product.setSaleCount(saleCount);
+
+        int reviewCount = this.reviewService.getReviewCount(product);
+        product.setReviewCount(reviewCount);
+    }
+
+    public void setSaleAndReviewNumber(List<Product> products){
+        for (Product product:products){
+            setSaleAndReviewNumber(product);
+        }
+    }
 }

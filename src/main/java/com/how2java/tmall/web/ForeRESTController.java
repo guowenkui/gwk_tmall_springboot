@@ -1,20 +1,17 @@
 package com.how2java.tmall.web;
 
-import com.how2java.tmall.pojo.Category;
-import com.how2java.tmall.pojo.User;
-import com.how2java.tmall.service.CategoryService;
-import com.how2java.tmall.service.ProductService;
-import com.how2java.tmall.service.UserService;
+import com.how2java.tmall.pojo.*;
+import com.how2java.tmall.service.*;
 import com.how2java.tmall.util.Result;
+import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ForeRESTController {
@@ -27,6 +24,17 @@ public class ForeRESTController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ProductImageSercice productImageSercice;
+
+    @Autowired
+    private PropertyValueService propertyValueService;
+
+    @Autowired
+    private ReviewService reviewService;
+
+
 
 
 
@@ -76,4 +84,28 @@ public class ForeRESTController {
         }
     }
 
+
+
+    @GetMapping("/foreproduct/{pid}")
+
+    public Object product(@PathVariable int pid){
+
+        Product product = this.productService.get(pid);
+        List<ProductImage> singles = this.productImageSercice.listSingleProductImages(product);
+        List<ProductImage> details = this.productImageSercice.listDetailProductImages(product);
+        product.setProductSingleImages(singles);
+        product.setProductDetailImages(details);
+
+        List<PropertyValue> pvs = this.propertyValueService.list(product);
+        List<Review> reviews = this.reviewService.list(product);
+        this.productService.setSaleAndReviewNumber(product);
+        this.productImageSercice.setFirstProductImage(product);
+
+
+        Map map = new HashMap();
+        map.put("product",product);
+        map.put("pvs",pvs);
+        map.put("reviews",reviews);
+        return Result.success(map);
+    }
 }
