@@ -1,5 +1,6 @@
 package com.how2java.tmall.web;
 
+import com.how2java.tmall.comparator.*;
 import com.how2java.tmall.pojo.*;
 import com.how2java.tmall.service.*;
 import com.how2java.tmall.util.Result;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,6 +112,9 @@ public class ForeRESTController {
     }
 
 
+    /**
+     *检查是否登录,未登录弹出模态登录窗口
+     */
     @GetMapping("/forecheckLogin")
     public Object checkLogin(HttpSession session){
         User user = (User) session.getAttribute("user");
@@ -119,4 +124,36 @@ public class ForeRESTController {
             return Result.success();
         }
     }
+
+
+    @GetMapping("/forecategory/{cid}")
+    public Object category(@PathVariable int cid,String sort){
+        Category category = this.categoryService.get(cid);
+        this.productService.fill(category);
+        this.productService.setSaleAndReviewNumber(category.getProducts());
+        this.categoryService.removeCategoryFromProduct(category);
+        if (sort!=null){
+            switch (sort){
+                case "review":
+                    Collections.sort(category.getProducts(),new ProductReviewComparator());
+                    break;
+                case "date":
+                    Collections.sort(category.getProducts(),new ProductDateComparator());
+                    break;
+                case "all":
+                    Collections.sort(category.getProducts(),new ProductAllComparator());
+                    break;
+                case "price":
+                    Collections.sort(category.getProducts(),new ProductPriceComparator());
+                    break;
+                case "saleCount":
+                    Collections.sort(category.getProducts(),new ProductSaleCountComparator());
+                    break;
+
+            }
+        }
+        return category;
+    }
+
+
 }

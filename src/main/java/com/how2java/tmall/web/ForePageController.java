@@ -60,4 +60,12 @@ public class ForePageController {
     public String product(){
         return "fore/product";
     }
+
+    /**
+     * 导向到分类页
+     */
+    @GetMapping("/category")
+    public String category(){
+        return "fore/category";
+    }
 }
