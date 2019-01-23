@@ -1,5 +1,6 @@
 package com.how2java.tmall.web;
 
+import com.google.common.collect.Ordering;
 import com.how2java.tmall.comparator.*;
 import com.how2java.tmall.pojo.*;
 import com.how2java.tmall.service.*;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpSession;
+import java.time.Year;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +37,9 @@ public class ForeRESTController {
 
     @Autowired
     private ReviewService reviewService;
+
+    @Autowired
+    private OrderItemService orderItemService;
 
 
 
@@ -168,6 +173,41 @@ public class ForeRESTController {
         this.productImageSercice.setFirstProductImage(ps);
         this.productService.setSaleAndReviewNumber(ps);
         return ps;
+    }
+
+    @GetMapping("/forebuyone")
+    public Object buyone(int pid,int num,HttpSession session){
+        return buyoneAndAddCart(pid,num,session);
+    }
+
+    private int buyoneAndAddCart(int pid, int num, HttpSession session) {
+        Product product = this.productService.get(pid);
+        int oiid = 0;
+
+        User user = (User) session.getAttribute("user");
+
+        List<OrderItem> orderItems = this.orderItemService.listByUser(user);
+
+        boolean isFound = false;
+        for (OrderItem item:orderItems){
+            if (item.getProduct().getId()==product.getId()){
+                item.setNumber(item.getNumber()+num);
+                this.orderItemService.update(item);
+                isFound = true;
+                oiid = item.getId();
+                break;
+            }
+        }
+
+        if (!isFound){
+            OrderItem item = new OrderItem();
+            item.setProduct(product);
+            item.setUser(user);
+            item.setNumber(num);
+            this.orderItemService.add(item);
+            oiid = item.getId();
+        }
+        return oiid;
     }
 
 

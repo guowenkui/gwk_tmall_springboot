@@ -4,6 +4,7 @@ import com.how2java.tmall.dao.OrderItemDAO;
 import com.how2java.tmall.pojo.Order;
 import com.how2java.tmall.pojo.OrderItem;
 import com.how2java.tmall.pojo.Product;
+import com.how2java.tmall.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,12 @@ public class OrderItemService {
 
     @Autowired
     private ProductImageSercice productImageSercice;
+
+
+    public  void add(OrderItem item){
+        this.orderItemDAO.save(item);
+    }
+
 
 
     public void fill(List<Order> orders) {
@@ -61,5 +68,13 @@ public class OrderItemService {
     private List<OrderItem> listByProduct(Product product) {
         List<OrderItem> items = this.orderItemDAO.findByProduct(product);
         return items;
+    }
+
+    public List<OrderItem> listByUser(User user){
+        return this.orderItemDAO.findByUserAndOrderIsNull(user);
+    }
+
+    public void update(OrderItem item) {
+        this.orderItemDAO.save(item);
     }
 }
