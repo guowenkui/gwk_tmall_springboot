@@ -155,5 +155,20 @@ public class ForeRESTController {
         return category;
     }
 
+    /**
+     * 搜索结果
+     */
+    @PostMapping("/foresearch")
+    public Object search(String keyword){
+        if (keyword==null){
+            keyword ="";
+        }
+
+        List<Product> ps = this.productService.search(keyword,0,20);
+        this.productImageSercice.setFirstProductImage(ps);
+        this.productService.setSaleAndReviewNumber(ps);
+        return ps;
+    }
+
 
 }
