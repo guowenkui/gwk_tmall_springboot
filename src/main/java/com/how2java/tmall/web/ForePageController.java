@@ -85,4 +85,13 @@ public class ForePageController {
     public String buy(){
         return "fore/buy";
     }
+
+
+    /**
+     * 导向到购物车界面
+     */
+    @GetMapping(value = "/cart")
+    public String cart(){
+        return "fore/cart";
+    }
 }

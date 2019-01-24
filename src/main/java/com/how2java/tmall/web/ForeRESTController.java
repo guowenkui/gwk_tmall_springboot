@@ -248,4 +248,18 @@ public class ForeRESTController {
     }
 
 
+    /**
+     * 购物车列表
+     */
+    @GetMapping("/forecart")
+    public Object cartList(HttpSession session){
+
+        User user = (User) session.getAttribute("user");
+
+        List<OrderItem> orderItems = this.orderItemService.listByUser(user);
+        this.productImageSercice.setFirstProductImageOnOrderItems(orderItems);
+        return  orderItems;
+    }
+
+
 }
