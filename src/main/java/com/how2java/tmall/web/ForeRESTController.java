@@ -237,4 +237,15 @@ public class ForeRESTController {
         return Result.success(map);
     }
 
+
+    /**
+     * 加入购物车
+     */
+    @GetMapping("foreaddCart")
+    public Object addCart(int pid,int num,HttpSession session){
+        buyoneAndAddCart(pid,num,session);
+        return Result.success();
+    }
+
+
 }
