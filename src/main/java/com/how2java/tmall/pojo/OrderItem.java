@@ -14,7 +14,7 @@ public class OrderItem {
     @Column(name = "id")
     int id;
 
-    @ManyToOne
+    @ManyToOne(cascade={CascadeType.ALL})
     @JoinColumn(name = "uid")
     User user;
 

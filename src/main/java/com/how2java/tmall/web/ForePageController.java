@@ -70,8 +70,19 @@ public class ForePageController {
     }
 
 
+    /**
+     * 导向到搜索页
+     */
     @GetMapping(value = "/search")
     public String search(){
         return "fore/search";
+    }
+
+    /**
+     * 导向到结算页
+     */
+    @GetMapping(value = "/buy")
+    public String buy(){
+        return "fore/buy";
     }
 }

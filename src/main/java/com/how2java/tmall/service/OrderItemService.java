@@ -71,10 +71,15 @@ public class OrderItemService {
     }
 
     public List<OrderItem> listByUser(User user){
-        return this.orderItemDAO.findByUserAndOrderIsNull(user);
+        List<OrderItem> items = this.orderItemDAO.findAll();
+        return items;
     }
 
     public void update(OrderItem item) {
         this.orderItemDAO.save(item);
+    }
+
+    public OrderItem get(int oiid) {
+       return   this.orderItemDAO.getOne(oiid);
     }
 }

@@ -12,10 +12,7 @@ import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpSession;
 import java.time.Year;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class ForeRESTController {
@@ -175,6 +172,9 @@ public class ForeRESTController {
         return ps;
     }
 
+    /**
+     * 立即购买
+     */
     @GetMapping("/forebuyone")
     public Object buyone(int pid,int num,HttpSession session){
         return buyoneAndAddCart(pid,num,session);
@@ -210,5 +210,31 @@ public class ForeRESTController {
         return oiid;
     }
 
+    /**
+     *结算订单页数据
+     */
+    @GetMapping("forebuy")
+    public Object buy(String[] oiid,HttpSession session){
+        List<OrderItem> orderItems = new ArrayList<>();
+        float total = 0;
+
+        for (String stringId:oiid){
+
+            int id = Integer.parseInt(stringId);
+            OrderItem item = this.orderItemService.get(id);
+            total+=item.getNumber()*item.getProduct().getPromotePrice();
+            orderItems.add(item);
+        }
+
+
+        this.productImageSercice.setFirstProductImageOnOrderItems(orderItems);
+
+        session.setAttribute("ois",orderItems);
+
+        Map map = new HashMap();
+        map.put("total",total);
+        map.put("orderItems",orderItems);
+        return Result.success(map);
+    }
 
 }
