@@ -262,4 +262,39 @@ public class ForeRESTController {
     }
 
 
+    /**
+     * 购物车订单删除
+     */
+    @GetMapping("/foredeleteOrderItem")
+    public Object deleteOrderItem(int oiid,HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if (user==null){
+            return Result.fail("未登录");
+        }
+        this.orderItemService.delete(oiid);
+        return Result.success();
+    }
+
+
+    /**
+     * 购物车订单改变数量
+     */
+    @GetMapping("forechangeOrderItem")
+    public Object changeOrderItem(int pid,int num,HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if (user==null){
+            return Result.fail("未登录");
+        }
+
+        List<OrderItem> items = this.orderItemService.listByUser(user);
+        for (OrderItem item:items){
+            if (item.getProduct().getId()==pid){
+                item.setNumber(num);
+                this.orderItemService.update(item);
+                break;
+            }
+        }
+        return Result.success();
+    }
+
 }
