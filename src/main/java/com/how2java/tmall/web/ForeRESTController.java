@@ -335,4 +335,13 @@ public class ForeRESTController {
         return order;
     }
 
+    @GetMapping("/forebought")
+    public Object bought(HttpSession session){
+        User user = (User) session.getAttribute("user");
+
+        List<Order> orders = this.orderService.listByUserWithoutDelete(user);
+        this.orderService.removeOrderFromOrderItem(orders);
+        return  orders;
+    }
+
 }

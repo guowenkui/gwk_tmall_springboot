@@ -114,4 +114,13 @@ public class ForePageController {
         return "fore/payed";
     }
 
+
+    /**
+     * 导向到我的订单界面
+     */
+    @GetMapping("/bought")
+    public String bought(){
+        return "fore/bought";
+    }
+
 }
