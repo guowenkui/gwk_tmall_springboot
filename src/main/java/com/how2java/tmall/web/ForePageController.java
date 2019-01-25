@@ -94,4 +94,24 @@ public class ForePageController {
     public String cart(){
         return "fore/cart";
     }
+
+
+    /**
+     * 导向到支付宝二维码界面
+     */
+
+    @GetMapping(value = "/alipay")
+    public String alipay(){
+        return "fore/alipay";
+    }
+
+
+    /**
+     * 导向到支付成功界面
+     */
+    @GetMapping("/payed")
+    public String payed(){
+        return "fore/payed";
+    }
+
 }

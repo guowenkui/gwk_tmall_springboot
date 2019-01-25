@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +28,9 @@ public class OrderService {
 
     @Autowired
     private OrderDAO orderDAO;
+
+    @Autowired
+    private OrderItemService orderItemService;
 
 
 
@@ -57,6 +62,31 @@ public class OrderService {
     public void update(Order order){
         this.orderDAO.save(order);
     }
+
+    @Transactional(propagation = Propagation.REQUIRED,rollbackForClassName = "Exception")
+    public  float add(Order order,List<OrderItem> orderItems){
+
+        float total = 0;
+        add(order);
+
+        if (false){
+            throw new RuntimeException();
+        }
+
+        for (OrderItem orderItem:orderItems){
+            orderItem.setOrder(order);
+            this.orderItemService.update(orderItem);
+            total +=orderItem.getProduct().getPromotePrice()*orderItem.getNumber();
+        }
+        return total;
+    }
+
+
+
+    public void add(Order order){
+        this.orderDAO.save(order);
+    }
+
 
 
 

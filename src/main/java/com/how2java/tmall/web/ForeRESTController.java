@@ -5,12 +5,14 @@ import com.how2java.tmall.comparator.*;
 import com.how2java.tmall.pojo.*;
 import com.how2java.tmall.service.*;
 import com.how2java.tmall.util.Result;
+import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.time.Year;
 import java.util.*;
 
@@ -37,6 +39,9 @@ public class ForeRESTController {
 
     @Autowired
     private OrderItemService orderItemService;
+
+    @Autowired
+    private OrderService orderService;
 
 
 
@@ -295,6 +300,39 @@ public class ForeRESTController {
             }
         }
         return Result.success();
+    }
+
+
+    /**
+     *提交订单
+     */
+    @PostMapping("/forecreateOrder")
+    public Object createOrder(@RequestBody Order order,HttpSession session){
+
+        User user = (User) session.getAttribute("user");
+        String orderCode = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date())+ RandomUtils.nextInt(10000);
+        order.setOrderCode(orderCode);
+        order.setStatus(OrderService.waitPay);
+        order.setUser(user);
+        order.setCreateDate(new Date());
+        List<OrderItem> items = (List<OrderItem>) session.getAttribute("ois");
+
+        float total = this.orderService.add(order,items);
+
+        Map map = new HashMap();
+        map.put("total",total);
+        map.put("oid",order.getId());
+        return  Result.success(map);
+
+    }
+
+    @GetMapping("/forepayed")
+    public Object payed(int oid){
+        Order order = this.orderService.get(oid);
+        order.setPayDate(new Date());
+        order.setStatus(OrderService.waitDelivery);
+        this.orderService.update(order);
+        return order;
     }
 
 }
