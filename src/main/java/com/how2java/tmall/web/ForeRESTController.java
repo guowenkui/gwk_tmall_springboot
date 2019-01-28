@@ -379,4 +379,53 @@ public class ForeRESTController {
         this.orderService.update(order);
     }
 
+    /**
+     *评价
+     */
+    @GetMapping("forereview")
+    public Object review(int oid){
+
+        Order order = this.orderService.get(oid);
+        this.orderItemService.fill(order);
+        this.orderService.removeOrderFromOrderItem(order);
+
+        Product product = order.getOrderItems().get(0).getProduct();
+
+        List<Review> reviews = this.reviewService.list(product);
+        this.productService.setSaleAndReviewNumber(product);
+
+        Map map = new HashMap();
+        map.put("o",order);
+        map.put("p",this.productService.get(88));
+        map.put("reviews",reviews);
+
+        return  Result.success(map);
+    }
+
+
+    /**
+     *做评价
+     */
+    @PostMapping("foredoreview")
+    public Object doReview(int oid,int pid,String content,HttpSession session){
+
+        Order order = this.orderService.get(oid);
+        order.setStatus(OrderService.finish);
+        this.orderService.update(order);
+
+
+        User user = (User) session.getAttribute("user");
+        Product product = this.productService.get(pid);
+
+
+        content = HtmlUtils.htmlEscape(content);
+        Review review = new Review();
+        review.setContent(content);
+        review.setUser(user);
+        review.setProduct(product);
+        review.setCreateDate(new Date());
+        this.reviewService.add(review);
+
+        return Result.success();
+    }
 }

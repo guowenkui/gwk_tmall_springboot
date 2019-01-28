@@ -25,4 +25,8 @@ public class ReviewService {
     public int getReviewCount(Product product) {
         return this.reviewDAO.countByProduct(product);
     }
+
+    public void add(Review review) {
+        this.reviewDAO.save(review);
+    }
 }

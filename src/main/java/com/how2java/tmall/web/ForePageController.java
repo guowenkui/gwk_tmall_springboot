@@ -141,4 +141,12 @@ public class ForePageController {
         return "fore/orderConfirmed";
     }
 
+    /**
+     * 导向到产品评价界面
+     */
+    @GetMapping("/review")
+    public String review(){
+        return "fore/review";
+    }
+
 }
