@@ -48,7 +48,7 @@ public class OrderService {
         }
     }
 
-    private void removeOrderFromOrderItem(Order order) {
+    public void removeOrderFromOrderItem(Order order) {
         List<OrderItem> orderItems = order.getOrderItems();
         for (OrderItem orderItem:orderItems){
             orderItem.setOrder(null);
@@ -100,5 +100,13 @@ public class OrderService {
         return  list;
     }
 
+    public void calc(Order order){
+        List<OrderItem> orderItems = order.getOrderItems();
+        float total = 0;
+        for (OrderItem item:orderItems){
+            total +=item.getProduct().getPromotePrice()*item.getNumber();
+        }
+        order.setTotal(total);
+    }
 
 }

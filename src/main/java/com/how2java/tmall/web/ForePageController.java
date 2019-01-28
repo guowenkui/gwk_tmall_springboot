@@ -123,4 +123,22 @@ public class ForePageController {
         return "fore/bought";
     }
 
+
+
+    /**
+     * 导向确认收货界面
+     */
+    @GetMapping("confirmPay")
+    public String confirmPay(){
+        return "fore/confirmPay";
+    }
+
+    /**
+     * 导向到确认支付界面
+     */
+    @GetMapping("orderConfirmed")
+    public String orderConfirmed(){
+        return "fore/orderConfirmed";
+    }
+
 }

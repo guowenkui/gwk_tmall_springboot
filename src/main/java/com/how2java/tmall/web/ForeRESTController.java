@@ -344,4 +344,39 @@ public class ForeRESTController {
         return  orders;
     }
 
+    /**
+     *我的订单--删除订单
+     */
+    @PutMapping("foredeleteOrder")
+    public Object deleteOrder(int oid){
+        Order order = this.orderService.get(oid);
+        order.setStatus(OrderService.delete);
+        this.orderService.update(order);
+        return Result.success();
+    }
+
+    /**
+     *
+     */
+    @GetMapping("foreconfirmPay")
+    public Object confirmPay(int oid){
+        Order order = this.orderService.get(oid);
+        this.orderItemService.fill(order);
+        this.orderService.calc(order);
+        this.orderService.removeOrderFromOrderItem(order);
+        return order;
+    }
+
+
+    /**
+     *确认支付
+     */
+    @GetMapping("foreorderConfirmed")
+    public void orderConfirmed(int oid){
+        Order order = this.orderService.get(oid);
+        order.setStatus(OrderService.waitReview);
+        order.setConfirmDate(new Date());
+        this.orderService.update(order);
+    }
+
 }
